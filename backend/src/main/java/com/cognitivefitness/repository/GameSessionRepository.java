@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -14,15 +13,18 @@ public interface GameSessionRepository extends JpaRepository<GameSession, String
 
     List<GameSession> findByUserIdOrderByPlayedAtDesc(String userId);
 
-    List<GameSession> findByUserIdAndGameIdOrderByScoreDesc(String userId, String gameId);
+    @Query("SELECT gs FROM GameSession gs WHERE gs.user.id = :userId ORDER BY gs.playedAt DESC")
+    List<GameSession> findTop5ByUserId(@Param("userId") String userId,
+                                       org.springframework.data.domain.Pageable pageable);
 
-    List<GameSession> findByUserIdAndPlayedAtAfterOrderByPlayedAtDesc(
-            String userId, LocalDateTime after);
+    @Query("SELECT COALESCE(SUM(gs.score), 0) FROM GameSession gs WHERE gs.user.id = :userId")
+    int getTotalScoreByUserId(@Param("userId") String userId);
 
-    @Query("SELECT AVG(gs.score) FROM GameSession gs WHERE gs.user.id = :userId AND gs.game.id = :gameId")
-    Double findAverageScoreByUserAndGame(@Param("userId") String userId,
-                                         @Param("gameId") String gameId);
+    @Query("SELECT COALESCE(AVG(gs.score), 0) FROM GameSession gs WHERE gs.user.id = :userId")
+    double getAverageScoreByUserId(@Param("userId") String userId);
 
-    @Query("SELECT COUNT(gs) FROM GameSession gs WHERE gs.user.id = :userId")
-    Long countTotalSessionsByUser(@Param("userId") String userId);
+    @Query("SELECT COALESCE(AVG(gs.accuracy), 0) FROM GameSession gs WHERE gs.user.id = :userId")
+    double getAverageAccuracyByUserId(@Param("userId") String userId);
+
+    long countByUserId(String userId);
 }
