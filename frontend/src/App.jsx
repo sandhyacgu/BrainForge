@@ -6,7 +6,7 @@ import DashboardPage from './pages/dashboard/DashboardPage';
 import ReflexRush from './pages/games/ReflexRush';
 import MemorySequence from './pages/games/MemorySequence';
 import PatternRecall from './pages/games/PatternRecall';
-
+import FocusGrid from './pages/games/FocusGrid';
 const ProtectedRoute = ({ children }) => {
     const { user, loading } = useAuth();
 
@@ -46,6 +46,11 @@ const App = () => {
                     <ProtectedRoute>
                         <PatternRecall />
                     </ProtectedRoute>
+                } />
+                <Route path="/games/focus-grid" element={
+                        <ProtectedRoute>
+                             <FocusGrid />
+                        </ProtectedRoute>
                 } />
                 <Route path="/" element={<Navigate to="/login" />} />
             </Routes>
