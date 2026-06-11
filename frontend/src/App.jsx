@@ -10,6 +10,7 @@ import FocusGrid from './pages/games/FocusGrid';
 import ColorTrap from './pages/games/ColorTrap';
 import SpotDifference from './pages/games/SpotDifference';
 import TypingFocus from './pages/games/TypingFocus';
+import SpeedMath from './pages/games/SpeedMath';
 const ProtectedRoute = ({ children }) => {
     const { user, loading } = useAuth();
 
@@ -69,6 +70,11 @@ const App = () => {
                          <ProtectedRoute>
                             <TypingFocus />
                          </ProtectedRoute>
+                } />
+                <Route path="/games/speed-math" element={
+                        <ProtectedRoute>
+                           <SpeedMath />
+                        </ProtectedRoute>
                 } />
                 <Route path="/" element={<Navigate to="/login" />} />
             </Routes>
