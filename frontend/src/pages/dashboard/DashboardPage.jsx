@@ -72,6 +72,12 @@ export default function DashboardPage() {
         </div>
         <div className="flex items-center gap-4">
           <span className="text-gray-400">Hey, <span className="text-white font-semibold">{stats?.username || user?.username}</span>!</span>
+          <button
+            onClick={() => navigate("/analytics")}
+            className="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg text-sm transition"
+          >
+            📊 Analytics
+          </button>
           <button onClick={handleLogout} className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg text-sm transition">
             Logout
           </button>
