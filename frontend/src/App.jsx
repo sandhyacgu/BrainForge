@@ -7,6 +7,7 @@ import ReflexRush from './pages/games/ReflexRush';
 import MemorySequence from './pages/games/MemorySequence';
 import PatternRecall from './pages/games/PatternRecall';
 import FocusGrid from './pages/games/FocusGrid';
+import ColorTrap from './pages/games/ColorTrap';
 const ProtectedRoute = ({ children }) => {
     const { user, loading } = useAuth();
 
@@ -51,6 +52,11 @@ const App = () => {
                         <ProtectedRoute>
                              <FocusGrid />
                         </ProtectedRoute>
+                } />
+                <Route path="/games/color-trap" element={
+                         <ProtectedRoute>
+                             <ColorTrap />
+                         </ProtectedRoute>
                 } />
                 <Route path="/" element={<Navigate to="/login" />} />
             </Routes>
