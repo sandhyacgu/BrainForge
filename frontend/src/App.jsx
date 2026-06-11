@@ -11,6 +11,7 @@ import ColorTrap from './pages/games/ColorTrap';
 import SpotDifference from './pages/games/SpotDifference';
 import TypingFocus from './pages/games/TypingFocus';
 import SpeedMath from './pages/games/SpeedMath';
+import DailyChallenge from './pages/games/DailyChallenge';
 const ProtectedRoute = ({ children }) => {
     const { user, loading } = useAuth();
 
@@ -74,6 +75,11 @@ const App = () => {
                 <Route path="/games/speed-math" element={
                         <ProtectedRoute>
                            <SpeedMath />
+                        </ProtectedRoute>
+                } />
+                <Route path="/games/daily-challenge" element={
+                        <ProtectedRoute>
+                            <DailyChallenge />
                         </ProtectedRoute>
                 } />
                 <Route path="/" element={<Navigate to="/login" />} />
