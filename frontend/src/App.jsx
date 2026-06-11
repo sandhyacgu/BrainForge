@@ -8,6 +8,8 @@ import MemorySequence from './pages/games/MemorySequence';
 import PatternRecall from './pages/games/PatternRecall';
 import FocusGrid from './pages/games/FocusGrid';
 import ColorTrap from './pages/games/ColorTrap';
+import SpotDifference from './pages/games/SpotDifference';
+import TypingFocus from './pages/games/TypingFocus';
 const ProtectedRoute = ({ children }) => {
     const { user, loading } = useAuth();
 
@@ -56,6 +58,16 @@ const App = () => {
                 <Route path="/games/color-trap" element={
                          <ProtectedRoute>
                              <ColorTrap />
+                         </ProtectedRoute>
+                } />
+                <Route path="/games/spot-difference" element={
+                         <ProtectedRoute>
+                            <SpotDifference />
+                         </ProtectedRoute>
+                } />
+                <Route path="/games/typing-focus" element={
+                         <ProtectedRoute>
+                            <TypingFocus />
                          </ProtectedRoute>
                 } />
                 <Route path="/" element={<Navigate to="/login" />} />
