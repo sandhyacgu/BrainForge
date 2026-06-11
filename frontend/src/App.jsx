@@ -12,6 +12,7 @@ import SpotDifference from './pages/games/SpotDifference';
 import TypingFocus from './pages/games/TypingFocus';
 import SpeedMath from './pages/games/SpeedMath';
 import DailyChallenge from './pages/games/DailyChallenge';
+import BossMode from './pages/games/BossMode';
 const ProtectedRoute = ({ children }) => {
     const { user, loading } = useAuth();
 
@@ -81,6 +82,11 @@ const App = () => {
                         <ProtectedRoute>
                             <DailyChallenge />
                         </ProtectedRoute>
+                } />
+                <Route path="/games/boss-mode" element={
+                       <ProtectedRoute>
+                          <BossMode />
+                       </ProtectedRoute>
                 } />
                 <Route path="/" element={<Navigate to="/login" />} />
             </Routes>
