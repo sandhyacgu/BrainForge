@@ -4,6 +4,7 @@ import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
 import DashboardPage from './pages/dashboard/DashboardPage';
 import ReflexRush from './pages/games/ReflexRush';
+import MemorySequence from './pages/games/MemorySequence';
 
 const ProtectedRoute = ({ children }) => {
     const { user, loading } = useAuth();
@@ -33,6 +34,11 @@ const App = () => {
                 <Route path="/games/reflex-rush" element={
                     <ProtectedRoute>
                         <ReflexRush />
+                    </ProtectedRoute>
+                } />
+                <Route path="/games/memory-sequence" element={
+                    <ProtectedRoute>
+                        <MemorySequence />
                     </ProtectedRoute>
                 } />
                 <Route path="/" element={<Navigate to="/login" />} />
