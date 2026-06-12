@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { saveGameSession } from "../../services/sessionService";
 
 const GAME_DURATION = 60;
 
@@ -79,11 +80,19 @@ export default function SpeedMath() {
     setGameState("playing");
     nextQuestion(1);
 
-    timerRef.current = setInterval(() => {
+     timerRef.current = setInterval(() => {
       setTimeLeft(t => {
         if (t <= 1) {
           clearInterval(timerRef.current);
           setGameState("finished");
+          const acc = correct + wrong > 0 ? Math.round((correct / (correct + wrong)) * 100) : 0;
+          saveGameSession({
+            gameSlug: "speed-math",
+            score,
+            durationMs: GAME_DURATION * 1000,
+            accuracy: acc,
+            metadata: { correct, wrong, level },
+          });
           return 0;
         }
         return t - 1;
