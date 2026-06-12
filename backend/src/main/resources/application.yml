@@ -1,16 +1,14 @@
+
 server:
   port: 8080
-
 spring:
   application:
     name: cognitive-fitness-platform
-
   datasource:
     url: ${POSTGRES_URL:jdbc:postgresql://localhost:5432/cognitive_fitness}
     username: ${POSTGRES_USER:postgres}
-    password: Sandhya@1432
+    password: ${POSTGRES_PASSWORD:Sandhya@1432}
     driver-class-name: org.postgresql.Driver
-
   jpa:
     hibernate:
       ddl-auto: update
@@ -19,16 +17,9 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
-
-  data:
-    redis:
-      host: ${REDIS_HOST:localhost}
-      port: ${REDIS_PORT:6379}
-
 jwt:
   secret: ${JWT_SECRET:mySecretKeyForDevelopmentOnlyPleaseChangeInProduction}
   expiration: ${JWT_EXPIRY_MS:86400000}
-
 logging:
   level:
     com.cognitivefitness: DEBUG
