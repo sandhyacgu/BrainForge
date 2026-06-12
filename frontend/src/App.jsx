@@ -14,6 +14,7 @@ import SpeedMath from './pages/games/SpeedMath';
 import DailyChallenge from './pages/games/DailyChallenge';
 import BossMode from './pages/games/BossMode';
 import AnalyticsPage from './pages/analytics/AnalyticsPage';
+import LeaderboardPage from './pages/leaderboard/LeaderboardPage';
 const ProtectedRoute = ({ children }) => {
     const { user, loading } = useAuth();
 
@@ -38,6 +39,11 @@ const App = () => {
                     <ProtectedRoute>
                         <DashboardPage />
                     </ProtectedRoute>
+                } />
+                <Route path="/leaderboard" element={
+                     <ProtectedRoute>
+                        <LeaderboardPage />
+                     </ProtectedRoute>
                 } />
                 <Route path="/games/reflex-rush" element={
                     <ProtectedRoute>

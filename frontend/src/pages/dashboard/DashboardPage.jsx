@@ -81,6 +81,10 @@ export default function DashboardPage() {
           <button onClick={handleLogout} className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg text-sm transition">
             Logout
           </button>
+          🏆 Leaderboard
+          <button onClick={() => navigate("/leaderboard")}className="bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded-lg text-sm transition"
+         >
+         </button>
         </div>
       </nav>
 
