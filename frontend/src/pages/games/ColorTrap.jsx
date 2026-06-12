@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { saveGameSession } from "../../services/sessionService";
 
 const COLORS = ["Red", "Blue", "Green", "Yellow", "Purple", "Orange"];
 
@@ -38,9 +39,17 @@ export default function ColorTrap() {
   const resultsRef = useRef([]);
   const answeredRef = useRef(false);
 
-  const showNextQuestion = useCallback(() => {
+    const showNextQuestion = useCallback(() => {
     if (roundRef.current > TOTAL_ROUNDS) {
       setGameState("finished");
+      const correct = resultsRef.current.filter(r => r.correct).length;
+      saveGameSession({
+        gameSlug: "color-trap",
+        score: scoreRef.current,
+        durationMs: TOTAL_ROUNDS * 3000,
+        accuracy: Math.round((correct / TOTAL_ROUNDS) * 100),
+        metadata: { correct, total: TOTAL_ROUNDS },
+      });
       return;
     }
 
