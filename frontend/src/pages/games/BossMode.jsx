@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { saveGameSession } from "../../services/sessionService";
 
 const ROUNDS = [
   {
@@ -132,13 +133,25 @@ export default function BossMode() {
           setTimeout(() => nextRound(roundIndex + 1, currentScore + pts, newScores), 500);
         });
       });
-    } else {
+      } else {
       startTimer(round.duration, () => {
         const pts = round.type === "math" ? mathCorrect * 100 : wordCorrect * 100;
         const newScores = [...scores, { round: round.title, score: pts }];
         setRoundScores(newScores);
-        setScore(currentScore + pts);
-        setTimeout(() => nextRound(roundIndex + 1, currentScore + pts, newScores), 500);
+        const finalScore = currentScore + pts;
+        setScore(finalScore);
+        if (roundIndex + 1 >= ROUNDS.length) {
+          setGameState("finished");
+          saveGameSession({
+            gameSlug: "boss-mode",
+            score: finalScore,
+            durationMs: 65000,
+            accuracy: 0,
+            metadata: { roundScores: newScores },
+          });
+        } else {
+          setTimeout(() => nextRound(roundIndex + 1, finalScore, newScores), 500);
+        }
       });
     }
   }, [startTimer, reflexDone, mathCorrect, wordCorrect]);
@@ -201,13 +214,23 @@ export default function BossMode() {
     setWordInput("");
     setTimeout(() => {
       setWordFeedback(null);
-      if (wordIndex >= WORDS.length - 1) {
+       if (wordIndex >= WORDS.length - 1) {
         clearInterval(timerRef.current);
         const pts = (correct ? wordCorrect + 1 : wordCorrect) * 100;
         const newScores = [...roundScores, { round: ROUNDS[3].title, score: pts }];
         setRoundScores(newScores);
-        setScore(s => s + pts);
-        setTimeout(() => setGameState("finished"), 500);
+        const finalScore = score + pts;
+        setScore(finalScore);
+        setTimeout(() => {
+          setGameState("finished");
+          saveGameSession({
+            gameSlug: "boss-mode",
+            score: finalScore,
+            durationMs: 65000,
+            accuracy: 0,
+            metadata: { roundScores: newScores },
+          });
+        }, 500);
       } else {
         setWordIndex(i => i + 1);
       }
