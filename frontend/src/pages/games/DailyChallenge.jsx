@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { saveGameSession } from "../../services/sessionService";
 
 const DAILY_CHALLENGES = [
   {
@@ -82,11 +83,18 @@ export default function DailyChallenge() {
   const [timeLeft, setTimeLeft] = useState(60);
   const [timerActive, setTimerActive] = useState(false);
 
-  useEffect(() => {
+   useEffect(() => {
     if (!timerActive) return;
     if (timeLeft <= 0) {
       setResult("timeout");
       setGameState("finished");
+      saveGameSession({
+        gameSlug: "daily-challenge",
+        score: 0,
+        durationMs: 60000,
+        accuracy: 0,
+        metadata: { challengeType: challenge.type, timeout: true },
+      });
       return;
     }
     const t = setTimeout(() => setTimeLeft(tl => tl - 1), 1000);
@@ -97,8 +105,7 @@ export default function DailyChallenge() {
     setGameState("playing");
     setTimerActive(true);
   };
-
-  const handleSubmit = () => {
+   const handleSubmit = () => {
     const userAnswer = input.trim().toUpperCase();
     const correctAnswer = challenge.answer.toUpperCase();
     const isCorrect = userAnswer === correctAnswer;
@@ -106,6 +113,15 @@ export default function DailyChallenge() {
     setTimerActive(false);
     setResult(isCorrect ? "correct" : "wrong");
     setGameState("finished");
+
+    const score = isCorrect ? (500 + timeLeft * 5 - (showHint ? 100 : 0)) : 0;
+    saveGameSession({
+      gameSlug: "daily-challenge",
+      score,
+      durationMs: (60 - timeLeft) * 1000,
+      accuracy: isCorrect ? 100 : 0,
+      metadata: { challengeType: challenge.type, usedHint: showHint },
+    });
   };
 
   const getScore = () => {
