@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { saveGameSession } from "../../services/sessionService";
 
 const ROUNDS = 5;
 
@@ -47,6 +48,16 @@ export default function ReflexRush() {
       if (round >= ROUNDS) {
         setTimeout(() => {
           setGameState("finished");
+          const finalResults = [...results, time];
+          const avg = Math.round(finalResults.reduce((a, b) => a + b, 0) / finalResults.length);
+          const score = avg < 200 ? 1000 : avg < 300 ? 800 : avg < 400 ? 600 : avg < 500 ? 400 : 200;
+          saveGameSession({
+            gameSlug: "reflex-rush",
+            score,
+            durationMs: finalResults.reduce((a, b) => a + b, 0),
+            accuracy: 100,
+            metadata: { avgReactionTime: avg, results: finalResults },
+          });
         }, 1000);
       }
     }
