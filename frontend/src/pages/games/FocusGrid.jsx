@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { saveGameSession } from "../../services/sessionService";
 
 const GRID_SIZE = 5;
 const GAME_DURATION = 60;
@@ -37,12 +38,21 @@ export default function FocusGrid() {
       generateGrid();
     }, 2000);
 
-    timerRef.current = setInterval(() => {
+   timerRef.current = setInterval(() => {
       setTimeLeft(t => {
         if (t <= 1) {
           clearInterval(intervalRef.current);
           clearInterval(timerRef.current);
           setGameState("finished");
+          const finalScore = Math.max(0, score - missed * 5);
+          const totalAttempts = (score / 10) + missed;
+          saveGameSession({
+            gameSlug: "focus-grid",
+            score: finalScore,
+            durationMs: GAME_DURATION * 1000,
+            accuracy: totalAttempts > 0 ? Math.round(((score / 10) / totalAttempts) * 100) : 0,
+            metadata: { hits: score / 10, misses: missed },
+          });
           return 0;
         }
         return t - 1;
