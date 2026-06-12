@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { saveGameSession } from "../../services/sessionService";
 
 const GRID_SIZE = 4; // 4x4 grid
 const LEVELS = [
@@ -80,8 +81,17 @@ export default function PatternRecall() {
     setGameState("result");
     setShowPattern(true);
 
-    if (level >= LEVELS.length - 1) {
-      setTimeout(() => setGameState("finished"), 2000);
+     if (level >= LEVELS.length - 1) {
+      setTimeout(() => {
+        setGameState("finished");
+        saveGameSession({
+          gameSlug: "pattern-recall",
+          score: score + points,
+          durationMs: 0,
+          accuracy: Math.round((correct / total) * 100),
+          metadata: { levelsCompleted: level + 1 },
+        });
+      }, 2000);
     } else {
       setTimeout(() => {
         setLevel(l => l + 1);
