@@ -347,7 +347,7 @@ export default function BossMode() {
                     value={memoryInput}
                     onChange={e => setMemoryInput(e.target.value)}
                     onKeyDown={e => e.key === "Enter" && handleMemorySubmit()}
-                    placeholder="e.g. 4 7 2 9 5"
+                    // placeholder="e.g. 4 7 2 9 5"
                     className="w-full px-4 py-3 rounded-xl bg-gray-800 border border-gray-600 text-white outline-none focus:border-purple-500"
                     autoFocus
                   />
